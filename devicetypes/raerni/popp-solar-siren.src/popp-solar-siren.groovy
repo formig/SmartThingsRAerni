@@ -15,6 +15,9 @@
  *	Author: SmartThings
  *	Date: 2017-07-19
  */
+
+//test github
+
 metadata {
  definition (name: "Popp Solar Siren", namespace: "raerni", author: "Roman Aerni", ocfDeviceType: "x.com.st.d.sensor.smoke") {
 	capability "Actuator"
@@ -23,13 +26,13 @@ metadata {
 	capability "Switch"
 	capability "Health Check"
 	capability "Battery"
-    capability "Refresh"
-    capability "Tamper Alert"
-    capability "Health Check"
+  capability "Refresh"
+  capability "Tamper Alert"
+  capability "Health Check"
 
 	command "test"
-    command "off"
-    command "panic"
+  command "off"
+  command "panic"
 
 	fingerprint deviceId: "0x1005", inClusters: "0x5E,0x98", deviceJoinName: "Popp Solar Siren"
  }
@@ -44,8 +47,8 @@ metadata {
  tiles(scale: 2) {
 	multiAttributeTile(name:"alarm", type: "generic", width: 6, height: 4){
 		tileAttribute ("device.alarm", key: "PRIMARY_CONTROL") {
-			attributeState "off", label:'off', action:'alarm.siren', icon:"st.alarm.alarm.alarm", backgroundColor:"#ffffff"
-			attributeState "both", label:'alarm!', action:'alarm.off', icon:"st.alarm.alarm.alarm", backgroundColor:"#e86d13"
+			attributeState "off", label:'off', action:"on", icon:"st.alarm.alarm.alarm", backgroundColor:"#ffffff" //action:'alarm.siren'
+			attributeState "both", label:'alarm!', action:"off", icon:"st.alarm.alarm.alarm", backgroundColor:"#e86d13" //action:'alarm.off'
 		}
         tileAttribute ("statusText", key: "SECONDARY_CONTROL") {
         	attributeState "statusText", label:'${currentValue}'
@@ -85,6 +88,7 @@ preferences {
 		input "sound", "number", title: "Siren sound (1-5)", defaultValue: 1, required: true //, displayDuringSetup: true  // don't display during setup until defaultValue is shown
 		input "volume", "number", title: "Volume (1-3)", defaultValue: 3, required: true //, displayDuringSetup: true
         input "mode", "number", title:"Siren triggering mode", defaultValue: 0, required: true
+        input "delay", "number", title:"Siren triggering delay", defaultValue: 0, required: true // set a Delay befor the siren goes off
 	}
 
 	main "alarm"
@@ -156,7 +160,8 @@ def zwaveEvent(physicalgraph.zwave.Command cmd) {
 def on() {
 	log.debug "sending on"
 	[
-		secure(zwave.basicV1.basicSet(value: 0xFF)),
+		"delay 10000",
+        secure(zwave.basicV1.basicSet(value: 0xFF)),
 		secure(zwave.basicV1.basicGet())
 	]
 }
