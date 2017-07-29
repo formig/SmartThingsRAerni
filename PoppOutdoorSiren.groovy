@@ -160,7 +160,7 @@ def zwaveEvent(physicalgraph.zwave.Command cmd) {
 def on() {
 	log.debug "sending on"
 	[
-		"delay 3000",
+		"delay 10000",
         secure(zwave.basicV1.basicSet(value: 0xFF)),
 		secure(zwave.basicV1.basicGet())
 	]
