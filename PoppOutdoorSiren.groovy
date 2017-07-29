@@ -16,6 +16,8 @@
  *	Date: 2017-07-19
  */
 
+//test github
+
 metadata {
  definition (name: "Popp Solar Siren", namespace: "raerni", author: "Roman Aerni", ocfDeviceType: "x.com.st.d.sensor.smoke") {
 	capability "Actuator"
